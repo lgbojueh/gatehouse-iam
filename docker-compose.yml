@@ -1,0 +1,21 @@
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////app/data/gatehouse.db
+      JWT_SECRET: development-only-change-me-use-32-bytes-minimum
+      ACCESS_TOKEN_MINUTES: 60
+    volumes:
+      - gatehouse_data:/app/data
+
+  web:
+    build: ./frontend
+    ports:
+      - "5174:80"
+    depends_on:
+      - api
+
+volumes:
+  gatehouse_data:
